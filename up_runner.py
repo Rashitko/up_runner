@@ -28,7 +28,6 @@ class UpRunner:
         self.__protocol = UpSpawnProtocol(self)
         spawn_endpoint.listen(UpSpawnProtocolFactory(self.__protocol))
 
-
     def run(self):
         self.logger.info("Up Runner started")
         reactor.run()
@@ -37,7 +36,7 @@ class UpRunner:
         self.logger.info("Up Runner stopped")
 
     def on_spawn_request(self):
-        if self.up_proc:
+        if self.up_proc and self.up_proc.poll() is None:
             self.logger.info("Up already running, no need to spawn")
             self.__protocol.transport.write(self.__create_spawn_message('Raspilot already running', True, None))
         else:
@@ -60,7 +59,7 @@ class UpRunner:
 
     def __create_spawn_message(self, message, spawned, error):
         message = {'message': message, 'spawned': spawned, 'error': error,
-                'myAddress': self.__protocol.transport.client[0]}
+                   'myAddress': self.__protocol.transport.client[0]}
         json_message = json.dumps(message)
         json_message += '\n'
         return bytes(json_message.encode('utf-8'))
