@@ -1,0 +1,5 @@
+script path: 'main.py'
+application root: '/Users/michal/development/python/raspilot/raspilot/'
+
+exit on connection lost: true
+exit delay: 5
