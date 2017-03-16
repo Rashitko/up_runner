@@ -55,7 +55,7 @@ class UpRunner:
             self.__script_path = config.get('script path', None)
 
     def __run_up(self, script_path):
-        self.__up_proc = subprocess.Popen(['python', script_path], stderr=subprocess.DEVNULL)
+        self.__up_proc = subprocess.Popen(['python', script_path])
         self.logger.info("Up Application running with PID %s" % self.up_proc.pid)
 
     def __create_spawn_message(self, message, spawned, error):
